@@ -20,7 +20,7 @@ import (
 func PostCSV(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
@@ -29,7 +29,7 @@ func PostCSV(c *gin.Context) {
 	// open file
 	fileData, err := file.Open()
 	if err != nil {
-		log.Fatal("Error while opening the file", err)
+		// log.Fatal("Error while opening the file", err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
@@ -39,7 +39,7 @@ func PostCSV(c *gin.Context) {
 	// parse csv file
 	nmiData, err := nmiCsv.NmiParser(reader)
 	if err != nil {
-		log.Fatal("Error while reading the file", err)
+		// log.Fatal("Error while reading the file", err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
@@ -47,15 +47,7 @@ func PostCSV(c *gin.Context) {
 
 	log.Println(nmiData)
 
-	// save to database
 	db := database.GlobDB
-	if err != nil {
-		log.Fatal("Error connecting to database", err)
-		c.IndentedJSON(http.StatusBadRequest, gin.H{
-			"message": err,
-		})
-	}
-
 	dbSession := db.Session(&gorm.Session{CreateBatchSize: 1000})
 
 	for _, data := range nmiData {
