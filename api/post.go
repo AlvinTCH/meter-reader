@@ -2,9 +2,8 @@ package api
 
 import (
 	"encoding/csv"
-	"net/http"
-
 	"log"
+	"net/http"
 
 	"flo/database"
 
@@ -20,7 +19,7 @@ import (
 func PostCSV(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
-		// log.Fatal(err)
+		log.Println(err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
@@ -29,7 +28,7 @@ func PostCSV(c *gin.Context) {
 	// open file
 	fileData, err := file.Open()
 	if err != nil {
-		// log.Fatal("Error while opening the file", err)
+		log.Println("Error while opening the file", err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
@@ -39,17 +38,15 @@ func PostCSV(c *gin.Context) {
 	// parse csv file
 	nmiData, err := nmiCsv.NmiParser(reader)
 	if err != nil {
-		// log.Fatal("Error while reading the file", err)
+		log.Println("Error while reading the file", err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
 	}
 
-	log.Println(nmiData)
-
 	db := database.GlobDB
+	// update/create db in batches
 	dbSession := db.Session(&gorm.Session{CreateBatchSize: 1000})
-
 	for _, data := range nmiData {
 		dbSession.Clauses(clause.OnConflict{
 			Columns:   []clause.Column{{Name: "timestamp"}, {Name: "nmi"}},

@@ -8,6 +8,7 @@ class Test:
     self.test_bad_file()
     self.test_update_file()
 
+  # init upload file
   def run(self):
     with open('sample_input.csv', 'rb') as f:
       response = requests.post(
@@ -22,6 +23,7 @@ class Test:
       
       print('Upload file test passed')
 
+  # test upload bad file
   def test_bad_file(self):
     with open('bad_file.csv', 'rb') as f:
       response = requests.post(
@@ -35,6 +37,7 @@ class Test:
         return
       print('Upload bad file test passed')
 
+  # test when data is updated
   def test_update_file(self):
     with open('test_update.csv', 'rb') as f:
       response = requests.post(

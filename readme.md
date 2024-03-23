@@ -30,7 +30,7 @@ The application will be available for calling on port **8080** and the database 
 You can call **localhost:8080/upload-csv** to upload the csv for each meter file. Sample file given under [scripts](https://github.com/AlvinTCH/meter-reader/tree/main/scripts)
 
 ## Testing
-Due to time constraints and knowledge constraints, I have written the test cases using Python. It should be migrated to use GORM Sqlmock when given more time. Here are the test cases it contains:
+Due to time constraints and knowledge constraints, I have written the test cases using Python. It should be migrated to use GORM Sqlmock in the future. Here are the test cases it contains:
 
 1. Normal upload
 2. Uploading a bad file (i.e file does not start with a 100 block)

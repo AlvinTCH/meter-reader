@@ -34,13 +34,12 @@ func TestUpdateReadings(c *gin.Context) {
 
 	rows, err := result.Rows()
 	if err != nil {
-		// log.Fatal("Error reading rows", err)
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"message": err,
 		})
 	}
 
-	//
+	// get data in json safe format
 	data := make([]MeterReadingsReturn, 0)
 	for rows.Next() {
 		db.ScanRows(rows, &readings)
